@@ -91,6 +91,39 @@ app.post('/login', (req, res) => {
     }
 });
 
+// Settings routes
+app.get('/settings', isAuthenticated, (req, res) => {
+    res.render('settings', { settings });
+});
+
+app.post('/settings', isAuthenticated, (req, res) => {
+    try {
+        const updatedSettings = {
+            expiryDays: parseInt(req.body.expiryDays) || 30,
+            pdfWidth: parseFloat(req.body.pdfWidth) || 210,
+            pdfHeight: parseFloat(req.body.pdfHeight) || 297,
+            titleFontSize: parseInt(req.body.titleFontSize) || 24,
+            normalFontSize: parseInt(req.body.normalFontSize) || 12
+        };
+
+        // Validate settings
+        if (updatedSettings.expiryDays < 1 || updatedSettings.expiryDays > 365) {
+            throw new Error('Expiry days must be between 1 and 365');
+        }
+        if (updatedSettings.pdfWidth < 50 || updatedSettings.pdfHeight < 50) {
+            throw new Error('PDF dimensions must be at least 50mm');
+        }
+        if (updatedSettings.titleFontSize < 8 || updatedSettings.normalFontSize < 6) {
+            throw new Error('Font sizes must be at least 6pt');
+        }
+
+        settings = updatedSettings;
+        res.json({ success: true, settings });
+    } catch (error) {
+        res.status(400).json({ success: false, error: error.message });
+    }
+});
+
 // Update voucher generation to use settings
 app.post('/generate-qr', isAuthenticated, async (req, res) => {
     try {
