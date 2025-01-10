@@ -5,14 +5,8 @@ const bcrypt = require('bcrypt');
 const { QRData } = require("../models/QRDatas.model");
 const qr = require('qrcode');
 const { QRSettings } = require("../models/QRSettings.model");
+const isAuthenticated = require("../middleware/auth.middleware");
 
-const isAuthenticated = (req, res, next) => {
-  if (req.session.isAuthenticated) {
-      next();
-  } else {
-      res.redirect('/login');
-  }
-};
 
 // 
 router.get('/api', (req, res) => {
