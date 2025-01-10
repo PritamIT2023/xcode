@@ -34,7 +34,7 @@ router.post('/settings', isAuthenticated, async(req, res) => {
       if (updatedSettings.titleFontSize < 8 || updatedSettings.normalFontSize < 6) {
           throw new Error('Font sizes must be at least 6pt');
       }
-
+      // Update setting data in database
       const data = await QRSettings.update(updatedSettings, { where: { userId: req.session.userId } })
       res.json({ success: true, settings: data });
   } catch (error) {

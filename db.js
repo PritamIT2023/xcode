@@ -1,9 +1,10 @@
 const { Sequelize } = require("sequelize");
+require('dotenv').config();
 
 // Create a new Sequelize instance
-const sequelize = new Sequelize('xcode', 'SA', 'MyStrongPass123', {
-  host: 'localhost',  // Change to your database host
-  dialect: 'mssql',   // Specify MSSQL
+const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.USER_NAME, process.env.DB_PASSWORD, {
+  host: process.env.HOST,  
+  dialect: process.env.DIALECT,   
   dialectOptions: {
     options: {
       encrypt: true,  // Use true for Azure SQL Database
