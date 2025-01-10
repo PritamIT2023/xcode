@@ -5,15 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const PDFDocument = require('pdfkit');
 const { QRSettings } = require("../models/QRSettings.model");
 const { QRData } = require("../models/QRDatas.model");
-
-// Middleware to check if user is authenticated
-const isAuthenticated = (req, res, next) => {
-  if (req.session.isAuthenticated) {
-      next();
-  } else {
-      res.redirect('/login');
-  }
-};
+const isAuthenticated = require("../middleware/auth.middleware");
 
 
 // Update voucher generation to use settings

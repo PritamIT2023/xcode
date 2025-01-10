@@ -23,15 +23,6 @@ app.use(session({
 }));
 
 
-// Default settings
-let settings = {
-    expiryDays: 30,
-    pdfWidth: 210, // A4 width in mm
-    pdfHeight: 297, // A4 height in mm
-    titleFontSize: 24,
-    normalFontSize: 12
-};
-
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -42,21 +33,9 @@ const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
 }
-app.use("/", authRouters);
+app.use("", authRouters);
 app.use("", qrRouters);
 app.use("", settingsRouters);
-
-
-
-
-// Middleware to check if user is authenticated
-const isAuthenticated = (req, res, next) => {
-    if (req.session.isAuthenticated) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
-};
 
 
 // Start server
@@ -74,5 +53,3 @@ const startServer = async () => {
   };
   
   startServer();
-
-  module.exports ={isAuthenticated}
