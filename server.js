@@ -23,16 +23,14 @@ app.use(session({
 }));
 
 
-
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
-}
+
+/**
+ * Register all routes
+ */
 app.use("", authRouters);
 app.use("", qrRouters);
 app.use("", settingsRouters);
@@ -41,7 +39,8 @@ app.use("", settingsRouters);
 // Start server
 const startServer = async () => {
     try {
-    //    await sequelize.sync({ alter: true }); // Set to true in development to auto-update tables
+      // It automatically creates the table in database if it doesn't exist
+    //await sequelize.sync({ alter: true }); // Set to true in development to auto-update tables
       console.log("Database synced successfully");
       
       app.listen(port, () => {

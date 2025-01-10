@@ -4,15 +4,13 @@ const isAuthenticated = require("../middleware/auth.middleware");
 const router = Router();
 
 
-
-
 // Settings routes
 router.get('/settings', isAuthenticated, async(req, res) => {
   const settings = await QRSettings.findOne({ where: { userId: req.session.userId } });
   res.render('settings', { settings });
 });
 
-
+// Upddate setting data
 router.post('/settings', isAuthenticated, async(req, res) => {
   try {
     const userSetting = await QRSettings.findOne({ where: { userId: req.session.userId } });
@@ -22,7 +20,8 @@ router.post('/settings', isAuthenticated, async(req, res) => {
           pdfWidth: parseFloat(req.body.pdfWidth) || userSetting.pdfWidth,
           pdfHeight: parseFloat(req.body.pdfHeight) || userSetting.pdfHeight,
           titleFontSize: parseInt(req.body.titleFontSize) || userSetting.titleFontSize,
-          normalFontSize: parseInt(req.body.normalFontSize) || userSetting.normalFontSize
+          normalFontSize: parseInt(req.body.normalFontSize) || userSetting.normalFontSize,
+          status: "active"
       };
 
       // Validate settings
